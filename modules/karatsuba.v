@@ -59,13 +59,19 @@ module karatsuba(X, Y, reset, Z);
     	case(state)
             s0: $display("estado de IDLE");
     		s1: A_fact <= A;
+
     		s2: begin
 				B_fact <= B;
+				
 				E_fact <= E;
 				D_fact <= D;
 			end
-    		s3: DE_prod = DE;
- 			s4: assign  Z = 2'b00;
+    		s3: DE_prod <= DE;
+
+ 			s4: begin
+				Z <= {A_fact} + {B_fact, 8'b00000000} + {DE_prod - (A_fact+B_fact), 4'b0000};
+				$display("Z: %D", Z);
+			end
 			default: next_state <= s0;
 	    endcase
     end
